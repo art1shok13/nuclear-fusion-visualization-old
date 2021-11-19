@@ -1,0 +1,15 @@
+{
+  "name": "nuclearsimulation",
+  "version": "1.0.0",
+  "description": "Nuclear simulation app for science work",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Roman Artyshevskyy",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^15.3.0"
+  },
+  "dependencies": {}
+}

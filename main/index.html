@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="UTF-8" />
+    <link rel="icon" href="icons_atom.png">
+
+    <style>
+      body {
+        margin: 0;
+        background: #E6D401;
+        background: black;
+        background-size: 100%;
+        font-family: 'Roboto', sans-serif;
+      }
+      canvas { width: 100%; height: 100vh }
+      .menu { 
+        color: white;
+        position: fixed;
+        right: 0;
+        width: 20%;
+        height: 100vh;
+        padding: 10px;
+        background: #3C3C3C;
+      }
+      label {
+        display: block;
+      }
+      #menu-btn {
+        position: fixed;
+        right: 10px;
+        top: 10px;
+      }
+      #menu-btn1 {
+        float: right;
+      }
+      body::-webkit-scrollbar { display: none; }
+    </style>
+
+    <script src="../libraries/three.min.js"></script>
+	<script src="../libraries/tween.min.js"></script>
+    
+  <title>Візуалізація термоядерних реакцій</title>
+  </head>
+  <body>
+    <button id="menu-btn" onclick="showMenu('block')">+</button>
+    <div class='menu'>
+      <button id="menu-btn1" onclick="showMenu('none')">-</button>
+      <label>Scale:
+        <input type="range" min="5" max="75" value="1" step="0.5" oninput="scale(this)" placeholder="Scale">
+      </label>
+      <label>Atom animation
+        <input type="checkbox" onchange="atomAnimation(this)" checked>
+      </label>
+      <button onclick="simulate(0)">Deiterium</button>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>
