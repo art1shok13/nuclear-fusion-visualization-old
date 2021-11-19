@@ -13,7 +13,8 @@ var reactions = [
       { type:0, valences:[1], protons:1, neutrons:1 },
       { type:0, valences:[1], protons:1, neutrons:1 }
     ],
-    product: { valences:[2,2,6,2,6,6], protons:26, neutrons:26},
+    // product: { valences:[2,2,6,2,6,6,2], protons:26, neutrons:26},
+    product: { valences:[1], protons:2, neutrons:1},
     subProduct: [
       { type:1 },
       { type:2 },
@@ -96,56 +97,52 @@ function createSphere(r, color, x, y){
 }
 
 class CustomSinCurve extends THREE.Curve {
-
 	constructor( scale = 1 ) {
-		super();
-		this.scale = scale;
+		super()
+		this.scale = scale
 	}
-
 	getPoint( t, optionalTarget = new THREE.Vector3() ) {
-
-		const tx = t*20;
-		const ty = Math.sin(20* Math.PI * t );
-
-		return optionalTarget.set( tx, ty, 0 ).multiplyScalar( this.scale/1 );
-
+		const tx = t * this.scale/10 * 4
+    const ty = Math.sin(5 * this.scale/10 * Math.PI * t )
+  
+		return optionalTarget.set( tx, ty, 0 ).multiplyScalar(100)
 	}
-
 }
 //=============================================================================================
 //=============================================================================================
 
-function createNeitrino({length, radius}){
-  const geometry = new THREE.CylinderGeometry( baseRadius/8, baseRadius/8, length*20, 32 );
-  const material = new THREE.MeshLambertMaterial({color: Colors.purple});
-  const cylinder = new THREE.Mesh( geometry, material );
-
-  const sphere = new THREE.Mesh( new THREE.SphereGeometry( baseRadius*1.5, 50, 50 ), material)
-  sphere.translateY(-10*length)
-
-  const neitrino = new THREE.Group().add( cylinder, sphere )
-  neitrino.rotation.z=1.57
-  neitrino.translateY(-10*length)
-
-  return neitrino
-}
-
-function createPositron({length}){
+function createPositron(length){
   const path = new CustomSinCurve( length )
   console.log(path)
   const geometry = new THREE.TubeGeometry( path, 2000, baseRadius/8, 20)
-  const material = new THREE.MeshLambertMaterial({color: Colors.indigo})
-  const mesh = new THREE.Mesh( geometry, material )
-  
+  const material = new THREE.MeshLambertMaterial({color: Colors.purple})
+  const sinusoid = new THREE.Mesh( geometry, material )
+
   const sphere = new THREE.Mesh( new THREE.SphereGeometry( baseRadius*1.5, 50, 50 ), material)
 
-  sphere.translateX(length*20)
-  console.log(sphere.position)
-  const positron = new THREE.Group()
-  positron.add( mesh, sphere )
+  sphere.translateX(length*40)
 
-  positron.rotation.z=0.90
+  const positron = new THREE.Group()
+
+  positron.add( sinusoid, sphere )
+
+  positron.rotateZ(0.90)
   return positron
+}
+
+function createNeitrino(length){
+  const geometry = new THREE.CylinderGeometry( baseRadius/8, baseRadius/8, length*40, 32 )
+  const material = new THREE.MeshLambertMaterial({color: Colors.indigo})
+  const cylinder = new THREE.Mesh( geometry, material )
+
+  const sphere = new THREE.Mesh( new THREE.SphereGeometry( baseRadius*1.5, 50, 50 ), material)
+  sphere.translateY(-20*length)
+
+  const neitrino = new THREE.Group().add( cylinder, sphere )
+  neitrino.rotation.z=1.57
+  neitrino.translateY(-20*length)
+
+  return neitrino
 }
 
 function createCore(p,n){
@@ -260,6 +257,11 @@ function scale(input){
 //===========================================================================================
 //===========================================================================================
 
+// scene.add(createNeitrino(1*10))
+// scene.add(createPositron(1*10))
+
+// // var reaction = [createAtom([2,2,6,2,6,6,2], 26, 26, null)]
+// var reaction = [createAtom([1], 1, 1, null)]
 var reaction = []
 var stage = 0
 function simulate(reactionId) {
@@ -282,18 +284,15 @@ function simulate(reactionId) {
 
   } else if(stage==1){
 
-    const explode = createSphere({ color: Colors.orange })
-    explode.material.opacity=0
-    scene.add(explode)
-
+    const explode = createSphere(1,Colors.orange)
     reaction.forEach((atom)=>{
 
       createjs.Tween.get().wait(1900).to({},100).addEventListener("complete", ()=>{
+        scene.add(explode)
+        const explodeScale = 1000*product.valences.length
 
-        explode.material.opacity=1
-        explodeScale=product.protons*7
         createjs.Tween.get(explode.scale)
-          .to({x:explodeScale,y:explodeScale,z:explodeScale},300)
+          .to({x:explodeScale,y:explodeScale,z:explodeScale}, 300)
           .addEventListener("complete", ()=>{
             explode.scale={x:1,y:1,z:1}
             scene.remove(explode)
@@ -317,15 +316,15 @@ function simulate(reactionId) {
     setTimeout(()=>{ 
       reaction = [createAtom(product.valences, product.protons, product.neutrons, null)]
       stage=0
-      const length = product.valences.length*30
+      const length = product.valences.length*10
 
       subProduct.forEach((item)=>{
-        // switch (item.type){
-        //   case 1:
-        //     scene.add(createPositron({length}))
-        //   case 2:
-        //     scene.add(createNeitrino({length}))
-        // }
+        switch (item.type){
+          case 1:
+            scene.add(createPositron(length))
+          case 2:
+            scene.add(createNeitrino(length))
+        }
       })
     }, 2150)
   }
