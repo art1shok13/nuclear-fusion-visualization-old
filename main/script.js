@@ -7,18 +7,37 @@ var Colors = {
   orange:0xFF9E00,
 }
 
+console.log(periodicTable)
+
 var reactions = [
   {//deiterium
     reagents: [
-      { type:0, valences:[1], protons:1, neutrons:1 },
-      { type:0, valences:[1], protons:1, neutrons:1 }
+      { type:0, protons:1, neutrons:1, id:1},
+      { type:0, protons:1, neutrons:1, id:1}
     ],
-    // product: { valences:[2,2,6,2,6,6,2], protons:26, neutrons:26},
-    product: { valences:[1], protons:2, neutrons:1},
+
+    product: [
+      {protons:2, neutrons:1, id:0}
+    ],
+
     subProduct: [
       { type:1 },
       { type:2 },
+    ]
+  },
+  {//He
+    reagents: [
+      { type:0, protons:3, neutrons:2, id:2},
+      { type:0, protons:3, neutrons:2, id:2}
     ],
+
+    product: [
+      { protons:2, neutrons:2, id:2, shift:null},
+      { protons:1, neutrons:1, id:1, shift:0},
+      { protons:1, neutrons:1, id:1, shift:1}
+    ],
+
+    subProduct: []
   }
 ]
 
@@ -187,13 +206,13 @@ function createCore(p,n){
   return core
 }
 
-function createAtom(shellCounts, protons, neutrons, type){
+function createAtom(shells, protons, neutrons, type){
   let shift = 0
 
   if(type == 0){
-    shift = -(baseRadius * protons * 50)
+    shift = -(baseRadius * shells.length * 40)
   }else if(type == 1){
-    shift =  baseRadius * protons * 50
+    shift =  baseRadius * shells.length * 40
   }
   let atom = []
 
@@ -201,8 +220,7 @@ function createAtom(shellCounts, protons, neutrons, type){
   atom[0].position.x += shift
 
   atom[1] = []
-
-  for (v = 1; v <= shellCounts.length; v++) {
+  for (v = 1; v <= shells.length; v++) {
     var valence = new THREE.Group()
 
     const radius = baseRadius * v * 13
@@ -211,11 +229,11 @@ function createAtom(shellCounts, protons, neutrons, type){
     valence.add(ring)
 
     let angle = 0
-    for (i = 0; i < shellCounts[v-1]; i++) {
+    for (i = 0; i < shells[v-1]; i++) {
       const posX = radius * Math.cos(angle)
       const posY = radius * Math.sin(angle)
 
-      angle += (Math.PI * 2) / shellCounts[v-1]
+      angle += (Math.PI * 2) / shells[v-1]
       const electron = createSphere(baseRadius*1.5, Colors.blue, posX, posY)
 
       valence.add(electron)
@@ -262,26 +280,118 @@ function scale(input){
 
 // // var reaction = [createAtom([2,2,6,2,6,6,2], 26, 26, null)]
 // var reaction = [createAtom([1], 1, 1, null)]
+
 var reaction = []
 var stage = 0
+var previousReaction = null
 function simulate(reactionId) {
   const {reagents, product, subProduct} = reactions[reactionId]
+  if(previousReaction==null){
+    previousReaction = reactionId
+    document.querySelector('.reaction').innerHTML=''
+  } else if (previousReaction != reactionId){
+    return
+  } else {
+    previousReaction = reactionId
+  }
+  
   if(stage==0){
+
     while(scene.children.length > 4){ 
       scene.remove(scene.children[4])
     }
     reagents.forEach( (reagent, i)=>{
-      switch (reagent.type) {
+      const {id, protons, neutrons, type} = reagent
+
+      let elementCard = document.createElement('div')
+      elementCard.classList.add("e-card")
+
+      let symbol = document.createElement('b')
+      symbol.innerHTML = periodicTable.elements[id].symbol
+
+      let extra = document.createElement('sup')
+      extra.innerHTML = protons
+
+      elementCard.appendChild(symbol)
+      elementCard.appendChild(extra)
+
+      document.querySelector('.reaction').appendChild(elementCard)
+
+      let plus = document.createElement('p')
+      plus.innerHTML = '+'
+
+      document.querySelector('.reaction').appendChild(plus)
+      switch (type) {
         case 0:
-          reaction.push(createAtom(reagent.valences, reagent.protons, reagent.neutrons, i))
+          reaction.push(createAtom(periodicTable.elements[id].shells, protons, neutrons, i))
         case 1:
 
         case 2:
       }
     })
+    
+    document.querySelector('.reaction').lastChild.innerHTML = '&#8594'
+
+    product.forEach( (product, i)=>{
+      const {id, protons, neutrons, shift} = product
+
+      let elementCard = document.createElement('div')
+      elementCard.classList.add("e-card")
+
+      let symbol = document.createElement('b')
+      symbol.innerHTML = periodicTable.elements[id].symbol
+
+      let extra = document.createElement('sup')
+      extra.innerHTML = protons
+  
+      elementCard.appendChild(symbol)
+      elementCard.appendChild(extra)
+
+      document.querySelector('.reaction').appendChild(elementCard)
+
+      let plus = document.createElement('p')
+      plus.innerHTML = '+'
+
+      document.querySelector('.reaction').appendChild(plus)
+    })
+
+    subProduct.forEach( (subProduct, i) => {
+      let s,e
+      switch (subProduct.type) {
+        case 1:
+          s = 'e'
+          e = '+'
+          break
+        case 2:
+          s = '&#957'
+          e = ''
+          break
+      }
+
+      let elementCard = document.createElement('div')
+      elementCard.classList.add("e-card")
+
+      let symbol = document.createElement('b')
+      symbol.innerHTML = s
+
+      let extra = document.createElement('sup')
+      extra.innerHTML = e
+  
+      elementCard.appendChild(symbol)
+      elementCard.appendChild(extra)
+
+      document.querySelector('.reaction').appendChild(elementCard)
+
+      let plus = document.createElement('p')
+      plus.innerHTML = '+'
+      plus.classList.add("e-card-split")
+
+      document.querySelector('.reaction').appendChild(plus)
+    })
+
+    document.querySelector('.reaction').lastChild.innerHTML = ''
 
     stage++
-
   } else if(stage==1){
 
     const explode = createSphere(1,Colors.orange)
@@ -289,7 +399,7 @@ function simulate(reactionId) {
 
       createjs.Tween.get().wait(1900).to({},100).addEventListener("complete", ()=>{
         scene.add(explode)
-        const explodeScale = 1000*product.valences.length
+        const explodeScale = 1000*periodicTable.elements[product[0].id].shells.length
 
         createjs.Tween.get(explode.scale)
           .to({x:explodeScale,y:explodeScale,z:explodeScale}, 300)
@@ -313,10 +423,15 @@ function simulate(reactionId) {
       })
 
     })
-    setTimeout(()=>{ 
-      reaction = [createAtom(product.valences, product.protons, product.neutrons, null)]
+    setTimeout(()=>{
+      reaction = []
+
+      product.forEach( (product, i) => {
+        const {id, protons, neutrons, shift} = product
+        reaction.push(createAtom(periodicTable.elements[id].shells, protons, neutrons, shift))
+      })
       stage=0
-      const length = product.valences.length*10
+      const length = periodicTable.elements[product[0].id].shells.length*10
 
       subProduct.forEach((item)=>{
         switch (item.type){
@@ -327,6 +442,7 @@ function simulate(reactionId) {
         }
       })
     }, 2150)
+    previousReaction = null
   }
   console.log(reaction)
 }
