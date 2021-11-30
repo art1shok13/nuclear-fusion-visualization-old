@@ -8,6 +8,11 @@ var Colors = {
 }
 
 console.log(periodicTable)
+periodicTable.elements.forEach(({symbol}, i)=>{
+  if(i!=1){
+    document.querySelector('.buttons').innerHTML+=`<button class="e-button" onclick="simulate(${i})">${symbol}</button>`
+  }
+})
 
 var reactions = [
   {//deiterium
@@ -25,6 +30,7 @@ var reactions = [
       { type:2 },
     ]
   },
+  {},//H
   {//He
     reagents: [
       { type:0, protons:3, neutrons:2, id:2},
@@ -271,6 +277,16 @@ function scale(input){
   )
 }
 
+function cls(){
+  stage = 0
+  document.querySelector('.reaction').innerHTML = ''
+  while(scene.children.length > 4){ 
+    scene.remove(scene.children[4])
+  }
+  reaction = []
+  previousReaction = null
+  console.log(stage, scene.children.length, reaction)
+}
 //===========================================================================================
 //===========================================================================================
 //===========================================================================================
