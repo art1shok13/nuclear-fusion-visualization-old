@@ -5,52 +5,20 @@ var Colors = {
   indigo:0x3a86ff,
   blue:0x68c3c0,
   orange:0xFF9E00,
+  yellow:0xffd000
 }
 
-console.log(periodicTable)
-periodicTable.elements.forEach(({symbol}, i)=>{
-  if(i!=1){
-    document.querySelector('.buttons').innerHTML+=`<button class="e-button" onclick="simulate(${i})">${symbol}</button>`
+periodicTable.elements.forEach(({symbol, name}, i)=>{
+  if(i!=1 && i!=27 && i!=28){
+    document.querySelector('.buttons').innerHTML+=`<button class="e-button" title="${name}" onclick="simulate(${i})">${symbol}</button>`
   }
 })
 
-var reactions = [
-  {//deiterium
-    reagents: [
-      { type:0, protons:1, neutrons:1, id:1},
-      { type:0, protons:1, neutrons:1, id:1}
-    ],
-
-    product: [
-      {protons:2, neutrons:1, id:0}
-    ],
-
-    subProduct: [
-      { type:1 },
-      { type:2 },
-    ]
-  },
-  {},//H
-  {//He
-    reagents: [
-      { type:0, protons:3, neutrons:2, id:2},
-      { type:0, protons:3, neutrons:2, id:2}
-    ],
-
-    product: [
-      { protons:2, neutrons:2, id:2, shift:null},
-      { protons:1, neutrons:1, id:1, shift:0},
-      { protons:1, neutrons:1, id:1, shift:1}
-    ],
-
-    subProduct: []
-  }
-]
-
 var scene = new THREE.Scene()
 
-var width = window.innerWidth
+var width = 0.7*window.innerWidth
 var height = window.innerHeight
+
 
 var z = 5
 var camera = new THREE.OrthographicCamera(
@@ -66,12 +34,13 @@ camera.position.z = 1
 
 var renderer = new THREE.WebGLRenderer({
   antialias: true,
-  alpha: true
+  alpha: true,
+  canvas: document.querySelector('#image'),
 });
 
 renderer.setClearColor("#fff", 0)
 
-renderer.setSize( window.innerWidth, window.innerHeight )
+renderer.setSize( width, height )
 
 document.body.appendChild( renderer.domElement )
 
@@ -93,7 +62,8 @@ lights.forEach(function(light){
 })
 
 const baseRadius = width/38.4
-console.log(baseRadius)
+
+
 
 createjs.Ticker.setFPS(60)
 
@@ -114,7 +84,6 @@ function createSphere(r, color, x, y){
   const material = new THREE.MeshLambertMaterial({color})
   const sphere = new THREE.Mesh( geometry, material )
 
-  // sphere.material.opacity=params.opacity || 1
   sphere.position.x = x || 0
   sphere.position.y = y || 0
 
@@ -127,10 +96,10 @@ class CustomSinCurve extends THREE.Curve {
 		this.scale = scale
 	}
 	getPoint( t, optionalTarget = new THREE.Vector3() ) {
-		const tx = t * this.scale/10 * 4
-    const ty = Math.sin(5 * this.scale/10 * Math.PI * t )
+		const tx = t * this.scale/10 * 8
+    const ty = Math.sin(10 * this.scale/10 * Math.PI * t )
   
-		return optionalTarget.set( tx, ty, 0 ).multiplyScalar(100)
+		return optionalTarget.set( tx, ty, 0 ).multiplyScalar(50)
 	}
 }
 //=============================================================================================
@@ -138,7 +107,7 @@ class CustomSinCurve extends THREE.Curve {
 
 function createPositron(length){
   const path = new CustomSinCurve( length )
-  console.log(path)
+
   const geometry = new THREE.TubeGeometry( path, 2000, baseRadius/8, 20)
   const material = new THREE.MeshLambertMaterial({color: Colors.purple})
   const sinusoid = new THREE.Mesh( geometry, material )
@@ -170,22 +139,36 @@ function createNeitrino(length){
   return neitrino
 }
 
-function createCore(p,n){
+function createGamma(length){
+  const geometry = new THREE.CylinderGeometry( baseRadius/8, baseRadius/8, length*40, 32 )
+  const material = new THREE.MeshLambertMaterial({color: Colors.yellow})
+  const cylinder = new THREE.Mesh( geometry, material )
 
+  const sphere = new THREE.Mesh( new THREE.SphereGeometry( baseRadius*1.5, 50, 50 ), material)
+  sphere.translateY(-20*length)
+
+  const neitrino = new THREE.Group().add( cylinder, sphere )
+  neitrino.rotation.z=-1
+  neitrino.translateY(-20*length)
+
+  return neitrino
+}
+
+function createCore(p,n , special){
+  
   const core = new THREE.Group()
-
-  const geometry = new THREE.SphereGeometry((n+p)+baseRadius/2, Math.ceil(Math.sqrt(n+p)), Math.ceil(Math.sqrt(n+p)))
+  const vparam = Math.ceil(Math.sqrt(n+p))
+  const geometry = new THREE.SphereGeometry((n+p)+baseRadius/2, vparam, vparam>=p+n ? vparam:vparam+1)
   const material = new THREE.MeshBasicMaterial({wireframe:true, color:0xffffff})
   const frame = new THREE.Mesh(geometry, material)
 
   core.add(frame)
-
   let vertices = frame.geometry.vertices
 
   while(p!=0){
     const random = Math.floor(Math.random() * vertices.length)
     const {x, y, z} = vertices[random]
-    const material = new THREE.MeshLambertMaterial({color: Colors.red})
+    const material = new THREE.MeshLambertMaterial({color: special==undefined ? Colors.red:Colors[special]})
     const geometry = new THREE.SphereGeometry(baseRadius*1.5, 40, 40)
     const nuklon = new THREE.Mesh(geometry, material)
 
@@ -212,17 +195,17 @@ function createCore(p,n){
   return core
 }
 
-function createAtom(shells, protons, neutrons, type){
+function createAtom(shells, protons, neutrons, type, special){
   let shift = 0
 
   if(type == 0){
-    shift = -(baseRadius * shells.length * 40)
+    shift = -(baseRadius*40 )
   }else if(type == 1){
-    shift =  baseRadius * shells.length * 40
+    shift =  baseRadius*40
   }
   let atom = []
 
-  atom[0] = createCore(protons, neutrons) //nucleus
+  atom[0] = createCore(protons, neutrons, special) //nucleus
   atom[0].position.x += shift
 
   atom[1] = []
@@ -285,7 +268,6 @@ function cls(){
   }
   reaction = []
   previousReaction = null
-  console.log(stage, scene.children.length, reaction)
 }
 //===========================================================================================
 //===========================================================================================
@@ -294,7 +276,7 @@ function cls(){
 // scene.add(createNeitrino(1*10))
 // scene.add(createPositron(1*10))
 
-// // var reaction = [createAtom([2,2,6,2,6,6,2], 26, 26, null)]
+// var reaction = [createAtom([2,2,6,2,6,6,2], 26, 26, null)]
 // var reaction = [createAtom([1], 1, 1, null)]
 
 var reaction = []
@@ -302,6 +284,7 @@ var stage = 0
 var previousReaction = null
 function simulate(reactionId) {
   const {reagents, product, subProduct} = reactions[reactionId]
+
   if(previousReaction==null){
     previousReaction = reactionId
     document.querySelector('.reaction').innerHTML=''
@@ -317,19 +300,21 @@ function simulate(reactionId) {
       scene.remove(scene.children[4])
     }
     reagents.forEach( (reagent, i)=>{
-      const {id, protons, neutrons, type} = reagent
-
+      const {id, protons, neutrons, type, shift, special} = reagent
       let elementCard = document.createElement('div')
       elementCard.classList.add("e-card")
 
       let symbol = document.createElement('b')
       symbol.innerHTML = periodicTable.elements[id].symbol
+      
+      if(symbol.innerHTML.length < 3){
+        let extra = document.createElement('sup')
+        extra.innerHTML = protons + neutrons
 
-      let extra = document.createElement('sup')
-      extra.innerHTML = protons
+        elementCard.appendChild(extra)
+      }
 
       elementCard.appendChild(symbol)
-      elementCard.appendChild(extra)
 
       document.querySelector('.reaction').appendChild(elementCard)
 
@@ -339,10 +324,9 @@ function simulate(reactionId) {
       document.querySelector('.reaction').appendChild(plus)
       switch (type) {
         case 0:
-          reaction.push(createAtom(periodicTable.elements[id].shells, protons, neutrons, i))
-        case 1:
-
-        case 2:
+          reaction.push(createAtom(periodicTable.elements[id].shells, protons, neutrons, shift==undefined ? i:null, special==undefined ? null:special))
+        case 4:
+          
       }
     })
     
@@ -358,10 +342,10 @@ function simulate(reactionId) {
       symbol.innerHTML = periodicTable.elements[id].symbol
 
       let extra = document.createElement('sup')
-      extra.innerHTML = protons
-  
-      elementCard.appendChild(symbol)
+      extra.innerHTML = protons + neutrons
+      
       elementCard.appendChild(extra)
+      elementCard.appendChild(symbol)
 
       document.querySelector('.reaction').appendChild(elementCard)
 
@@ -381,6 +365,14 @@ function simulate(reactionId) {
         case 2:
           s = '&#957'
           e = ''
+          break
+        case 3:
+          s = 'γ'
+          e = ''
+          break
+        case 4:
+          s = 'e'
+          e = '-'
           break
       }
 
@@ -418,20 +410,19 @@ function simulate(reactionId) {
         const explodeScale = 1000*periodicTable.elements[product[0].id].shells.length
 
         createjs.Tween.get(explode.scale)
-          .to({x:explodeScale,y:explodeScale,z:explodeScale}, 300)
+          .to({x: explodeScale, y: explodeScale, z: explodeScale}, 150)
           .addEventListener("complete", ()=>{
             explode.scale={x:1,y:1,z:1}
             scene.remove(explode)
           })
 
-        createjs.Tween.get(explode.material).wait(220).to({opacity:0},60)
+        // createjs.Tween.get(explode.material).wait(100).to({opacity:0},60)
 
       })
 
       createjs.Tween.get(atom[0].position).to({x:0}, 2000).addEventListener("complete", ()=>{
         scene.remove(atom[0])
       })
-
       atom[1].forEach((v)=>{
         createjs.Tween.get(v.position).to({x:0}, 2000).addEventListener("complete", ()=>{
           scene.remove(v)
@@ -447,20 +438,24 @@ function simulate(reactionId) {
         reaction.push(createAtom(periodicTable.elements[id].shells, protons, neutrons, shift))
       })
       stage=0
-      const length = periodicTable.elements[product[0].id].shells.length*10
+      const length = periodicTable.elements[product[0].id].shells.length*12+8
 
       subProduct.forEach((item)=>{
         switch (item.type){
           case 1:
             scene.add(createPositron(length))
+            break
           case 2:
             scene.add(createNeitrino(length))
+            break
+          case 3:
+            scene.add(createGamma(length))
+            break
         }
       })
-    }, 2150)
+    }, 2100)
     previousReaction = null
   }
-  console.log(reaction)
 }
 
 

@@ -1,13 +1,13 @@
 const periodicTable = {
     elements: [
       {
-        name: "Deiterium",
+        name: "Дейтерій",
         symbol: "D",
         protons: 2,
         shells: [1]
       },
       {
-        name: "Hydrogen",
+        name: "Гідроген",
         appearance: "colorless gas",
         atomic_mass: 1.008,
         boil: 20.271,
@@ -39,7 +39,7 @@ const periodicTable = {
         cpkhex: "ffffff"
       },
       {
-        name: "Helium",
+        name: "Гелій",
         appearance: "colorless gas, exhibiting a red-orange glow when placed in a high-voltage electric field",
         atomic_mass: 4.0026022,
         boil: 4.222,
@@ -72,7 +72,7 @@ const periodicTable = {
         cpkhex: "d9ffff"
       },
       {
-        name: "Lithium",
+        name: "Літій",
         appearance: "silvery-white",
         atomic_mass: 6.94,
         boil: 1603,
@@ -107,7 +107,7 @@ const periodicTable = {
         cpkhex: "cc80ff"
       },
       {
-        name: "Beryllium",
+        name: "Берилій",
         appearance: "white-gray metallic",
         atomic_mass: 9.01218315,
         boil: 2742,
@@ -143,7 +143,7 @@ const periodicTable = {
         cpkhex: "c2ff00"
       },
       {
-        name: "Boron",
+        name: "Бор",
         appearance: "black-brown",
         atomic_mass: 10.81,
         boil: 4200,
@@ -180,7 +180,7 @@ const periodicTable = {
         cpkhex: "ffb5b5"
       },
       {
-        name: "Carbon",
+        name: "Карбон",
         appearance: null,
         atomic_mass: 12.011,
         boil: null,
@@ -218,7 +218,7 @@ const periodicTable = {
         cpkhex: "909090"
       },
       {
-        name: "Nitrogen",
+        name: "Нітроген",
         appearance: "colorless gas, liquid or solid",
         atomic_mass: 14.007,
         boil: 77.355,
@@ -257,7 +257,7 @@ const periodicTable = {
         cpkhex: "3050f8"
       },
       {
-        name: "Oxygen",
+        name: "Оксиген",
         appearance: null,
         atomic_mass: 15.999,
         boil: 90.188,
@@ -297,7 +297,7 @@ const periodicTable = {
         cpkhex: "ff0d0d"
       },
       {
-        name: "Fluorine",
+        name: "Флуор",
         appearance: null,
         atomic_mass: 18.9984031636,
         boil: 85.03,
@@ -338,7 +338,7 @@ const periodicTable = {
         cpkhex: "90e050"
       },
       {
-        name: "Neon",
+        name: "Неон",
         appearance: "colorless gas exhibiting an orange-red glow when placed in a high voltage electric field",
         atomic_mass: 20.17976,
         boil: 27.104,
@@ -380,7 +380,7 @@ const periodicTable = {
         cpkhex: "b3e3f5"
       },
       {
-        name: "Sodium",
+        name: "Натрій",
         appearance: "silvery white metallic",
         atomic_mass: 22.989769282,
         boil: 1156.09,
@@ -424,7 +424,7 @@ const periodicTable = {
         cpkhex: "ab5cf2"
       },
       {
-        name: "Magnesium",
+        name: "Магній",
         appearance: "shiny grey solid",
         atomic_mass: 24.305,
         boil: 1363,
@@ -469,7 +469,7 @@ const periodicTable = {
         cpkhex: "8aff00"
       },
       {
-        name: "Aluminium",
+        name: "Алюміній",
         appearance: "silvery gray metallic",
         atomic_mass: 26.98153857,
         boil: 2743,
@@ -515,7 +515,7 @@ const periodicTable = {
         cpkhex: "bfa6a6"
       },
       {
-        name: "Silicon",
+        name: "Силіцій",
         appearance: "crystalline, reflective with bluish-tinged faces",
         atomic_mass: 28.085,
         boil: 3538,
@@ -562,7 +562,7 @@ const periodicTable = {
         cpkhex: "f0c8a0"
       },
       {
-        name: "Phosphorus",
+        name: "Фосфор",
         appearance: "colourless, waxy white, yellow, scarlet, red, violet, black",
         atomic_mass: 30.9737619985,
         boil: null,
@@ -610,7 +610,7 @@ const periodicTable = {
         cpkhex: "ff8000"
       },
       {
-        name: "Sulfur",
+        name: "Сульфур",
         appearance: "lemon yellow sintered microcrystals",
         atomic_mass: 32.06,
         boil: 717.8,
@@ -659,7 +659,7 @@ const periodicTable = {
         cpkhex: "ffff30"
       },
       {
-        name: "Chlorine",
+        name: "Хлор",
         appearance: "pale yellow-green gas",
         atomic_mass: 35.45,
         boil: 239.11,
@@ -709,7 +709,7 @@ const periodicTable = {
         cpkhex: "1ff01f"
       },
       {
-        name: "Argon",
+        name: "Аргон",
         appearance: "colorless gas exhibiting a lilac/violet glow when placed in a high voltage electric field",
         atomic_mass: 39.9481,
         boil: 87.302,
@@ -760,7 +760,7 @@ const periodicTable = {
         cpkhex: "80d1e3"
       },
       {
-        name: "Potassium",
+        name: "Калій",
         appearance: "silvery gray",
         atomic_mass: 39.09831,
         boil: 1032,
@@ -813,7 +813,7 @@ const periodicTable = {
         cpkhex: "8f40d4"
       },
       {
-        name: "Calcium",
+        name: "Кальцій",
         appearance: null,
         atomic_mass: 40.0784,
         boil: 1757,
@@ -867,7 +867,7 @@ const periodicTable = {
         cpkhex: "3dff00"
       },
       {
-        name: "Scandium",
+        name: "Скандій",
         appearance: "silvery white",
         atomic_mass: 44.9559085,
         boil: 3109,
@@ -922,7 +922,7 @@ const periodicTable = {
         cpkhex: "e6e6e6"
       },
       {
-        name: "Titanium",
+        name: "Титан",
         appearance: "silvery grey-white metallic",
         atomic_mass: 47.8671,
         boil: 3560,
@@ -978,7 +978,7 @@ const periodicTable = {
         cpkhex: "bfc2c7"
       },
       {
-        name: "Vanadium",
+        name: "Ванадій",
         appearance: "blue-silver-grey metal",
         atomic_mass: 50.94151,
         boil: 3680,
@@ -1035,7 +1035,7 @@ const periodicTable = {
         cpkhex: "a6a6ab"
       },
       {
-        name: "Chromium",
+        name: "Хром",
         appearance: "silvery metallic",
         atomic_mass: 51.99616,
         boil: 2944,
@@ -1093,7 +1093,7 @@ const periodicTable = {
         cpkhex: "8a99c7"
       },
       {
-        name: "Manganese",
+        name: "Манган",
         appearance: "silvery metallic",
         atomic_mass: 54.9380443,
         boil: 2334,
@@ -1152,7 +1152,7 @@ const periodicTable = {
         cpkhex: "9c7ac7"
       },
       {
-        name: "Iron",
+        name: "Ферум",
         appearance: "lustrous metallic with a grayish tinge",
         atomic_mass: 55.8452,
         boil: 3134,
@@ -1210,6 +1210,14 @@ const periodicTable = {
           895161
         ],
         cpkhex: "e06633"
+      },
+      {
+        symbol:'p',
+        shells:[],
+      },
+      {
+        symbol:'e<sup>-</sup>',
+        shells: [],
       }
     ]
   }
