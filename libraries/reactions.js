@@ -132,7 +132,7 @@ var reactions = [
       ],
       product: [
         { type:0, protons:12, neutrons:11, id:11},
-        { type:0, protons:1, neutrons:0, id:1},
+        { type:0, protons:1, neutrons:0, id:1, shift:0},
       ],
       subProduct: [
 
@@ -152,77 +152,161 @@ var reactions = [
     },
     {//Al
       reagents: [
-
+        { type:0, protons:12, neutrons:12, id:12},
+        { type:0, protons:2, neutrons:2, id:2}
       ],
       product: [
-          
+        {protons:13, neutrons:13, id:13},
+        {protons:1, neutrons:1, id:0, shift:0}
       ],
       subProduct: []
     },
-    {
-      reagents: [],
-      product: [],
-      subProduct: []
-    },
-    {
-      reagents: [],
-      product: [],
-      subProduct: []
-    },
-    {
-      reagents: [],
-      product: [],
-      subProduct: []
-    },
-    {
-      reagents: [],
-      product: [],
-      subProduct: []
-    },
-    {
-      reagents: [],
-      product: [],
-      subProduct: []
-    },
-    {
-      reagents: [],
-      product: [],
-      subProduct: []
-    },
-    {
-      reagents: [],
-      product: [],
-      subProduct: []
-    },
-    {
-      reagents: [],
-      product: [],
-      subProduct: []
-    },
-    {
-      reagents: [],
-      product: [],
-      subProduct: []
-    },
-    {
-      reagents: [],
-      product: [],
-      subProduct: []
-    },
-    {
-      reagents: [],
-      product: [],
-      subProduct: []
-    },
-    {
-      reagents: [],
-      product: [],
-      subProduct: []
-    },
-    {
+    {//Si
       reagents: [
-        { type:0, protons:24, neutrons:24, id:24},
-        { type:0, protons:2, neutrons:2, id:2}
+        {type:0, protons:8, neutrons:8, id:8},
+        {type:0, protons:8, neutrons:8, id:8}
+      ],
+      product: [
+        {protons:14, neutrons:14, id:14},
+        {protons:2, neutrons:2, id:2, shift:0}
+      ],
+      subProduct: []
+    },
+    {//P
+      reagents: [
+        {type:0, protons:8, neutrons:8, id:8},
+        {type:0, protons:8, neutrons:8, id:8}
+      ],
+      product: [
+        {protons:16, neutrons:15, id:15},
+        {protons:1, neutrons:0, id:1, shift:0}
+      ],
+      subProduct: []
+    },
+    {//S
+      reagents: [
+        {type:0, protons:8, neutrons:8, id:8},
+        {type:0, protons:8, neutrons:8, id:8}
+      ],
+      product: [
+        {protons:16, neutrons:16, id:16}
+      ],
+      subProduct: [
+        {type:3}
+      ]
+    },
+    {//Cl
+      reagents: [
+        {type:0, protons:16, neutrons:15, id:15},
+        {type:0, protons:2, neutrons:2, id:2}
+      ],
+      product: [
+        {protons:18, neutrons:17, id:17}
+      ],
+      subProduct: [
+        {type:3}
+      ]
+    },
+    {//Ar
+      reagents: [
+        {type:0, protons:16, neutrons:16, id:16},
+        {type:0, protons:2, neutrons:2, id:2, shift:0}
+      ],
+      product: [
+        {protons:18, neutrons:18, id:18}
+      ],
+      subProduct: [
+        {type:3}
+      ]
+    },
+    {//K
+      reagents: [
+        {type:0, protons:18, neutrons:17, id:17},
+        {type:0, protons:2, neutrons:2, id:2}
+      ],
+      product: [
+        {protons:20, neutrons:19, id:19}
+      ],
+      subProduct: [
+        {type:3}
+      ]
+    },
+    {//Ca
+      reagents: [
+        {type:0, protons:18, neutrons:18, id:18},
+        {type:0, protons:2, neutrons:2, id:2}
+      ],
+      product: [
+        {protons:20, neutrons:20, id:20}
+      ],
+      subProduct: [
+        {type:3}
+      ]
+    },
+    {//Sc
+      reagents: [
+        {type:0, protons:20, neutrons:19, id:19},
+        {type:0, protons:2, neutrons:2, id:2}
+      ],
+      product: [
+        {protons:22, neutrons:21, id:21}
+      ],
+      subProduct: [
+        {type:3}
+      ]
+    },
+    {//Ti
+      reagents: [
+        {type:0, protons:20, neutrons:20, id:20},
+        {type:0, protons:2, neutrons:2, id:2}
+      ],
+      product: [
+        {protons:22, neutrons:22, id:22}
+      ],
+      subProduct: [
+        {type:3}
+      ]
+    },
+    {//V
+      reagents: [
+        {type:0, protons:24, neutrons:24, id:24},
+        {type:0, protons:2, neutrons:2, id:2}
+      ],
+      product: [
+        {protons:28, neutrons:23, id:23}
+      ],
+      subProduct: [
+        {type:3}
+      ]
+    },
+    {//Cr
+      reagents: [
+        {type:0, protons:22, neutrons:22, id:22},
+        {type:0, protons:2, neutrons:2, id:2}
+      ],
+      product: [
+        {protons:24, neutrons:24, id:24}
+      ],
+      subProduct: [
+        {type:3}
+      ]
+    },
+    {//Mn
+      reagents: [
+        {type:0, protons:28, neutrons:23, id:23},
+        {type:0, protons:2, neutrons:2, id:2}
+      ],
+      product: [
+        {protons:28, neutrons:25, id:25}
+      ],
+      subProduct: [
+        {type:3}
+      ]
+    },
+    {//Fe
+      reagents: [
+        {type:0, protons:24, neutrons:24, id:24},
+        {type:0, protons:2, neutrons:2, id:2}
       ],
   
       product: [

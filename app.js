@@ -65,7 +65,7 @@ app.on('window-all-closed', () => {
 function createF1Window(){
   let F1Window = new BrowserWindow({
     width: 500,
-    height: 300,
+    height: 550,
     title:'Довідка'
   });
 
