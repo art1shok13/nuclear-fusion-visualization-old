@@ -3,6 +3,17 @@ const path = require('path')
 
 const mainMenuTemplate = [
   {
+    label: 'Про програму',
+    submenu:[
+      {
+        label:'Про програму',
+        click(){
+          createAboutWindow()
+        }
+      }
+    ]
+  },
+  {
     label: 'Довідка',
     submenu:[
       {
@@ -21,26 +32,11 @@ const mainMenuTemplate = [
         role: 'reload'
       }
     ]
-  },
-  {
-    label: 'Developer Tools',
-    submenu:[
-      {
-        role: 'reload'
-      },
-      {
-        label: 'Toggle DevTools',
-        accelerator:process.platform == 'darwin' ? 'Command+I' : 'Ctrl+I',
-        click(item, focusedWindow){
-          focusedWindow.toggleDevTools();
-        }
-      }
-    ]
   }
 ]
 
 app.on('ready', function(){
-    var mainWindow = new BrowserWindow({
+  var mainWindow = new BrowserWindow({
     width: 1270,
     height: 720,
     webPreferences: {
@@ -72,6 +68,20 @@ function createF1Window(){
   F1Window.loadFile(__dirname + '\\main\\F1.html')
 
   F1Window.on('close', function(){
-    addWindow = null;
+    F1Window = null;
+  })
+}
+
+function createAboutWindow(){
+  let aboutWindow = new BrowserWindow({
+    width: 500,
+    height: 550,
+    title:'Про програму'
+  });
+
+  aboutWindow.loadFile(__dirname + '\\main\\about.html')
+
+  aboutWindow.on('close', function(){
+    aboutWindow = null;
   })
 }

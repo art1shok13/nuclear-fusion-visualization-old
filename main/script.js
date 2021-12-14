@@ -504,7 +504,7 @@ var render = (time)=>{
 render()
 
 window.addEventListener('resize', ()=>{
-  camera.aspect= window.innerWidth/window.innerHeight
+  camera.aspect= width/height
   camera.updateProjectionMatrix()
-  renderer.setSize(window.innerWidth, window.innerHeight)
+  renderer.setSize(width, height)
 }, false)
